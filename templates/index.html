@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Premium Metal Price Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cinzel', serif;
+      background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
+      color: #fff;
+      overflow: hidden;
+    }
+    .firework {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: gold;
+      animation: explode 1.5s linear infinite;
+    }
+    @keyframes explode {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(50); opacity: 0; }
+    }
+    .container {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    h1 {
+      font-size: 3rem;
+      color: gold;
+      text-shadow: 0 0 10px gold, 0 0 20px #ffd700;
+      animation: shimmer 3s infinite;
+    }
+    @keyframes shimmer {
+      0%, 100% { text-shadow: 0 0 10px gold, 0 0 20px #ffd700; }
+      50% { text-shadow: 0 0 20px #fff, 0 0 40px gold; }
+    }
+    table {
+      margin: 40px auto;
+      border-collapse: collapse;
+      width: 90%;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    }
+    th, td {
+      padding: 18px;
+      text-align: center;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+    th {
+      background-color: rgba(255, 215, 0, 0.1);
+      color: #ffd700;
+    }
+    td {
+      color: #f0e68c;
+    }
+    .glitter {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 8px white;
+      animation: glitterAnim 2s infinite;
+    }
+    @keyframes glitterAnim {
+      0%, 100% { opacity: 0; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-20px); }
+    }
+
+    /* Chatbot Styles */
+    #chatbot-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        width: 60px;
+        height: 60px;
+        background-color: gold;
+        border-radius: 50%;
+        box-shadow: 0 0 10px gold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 24px;
+        color: black;
+    }
+    #chatbot-box {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        background: rgba(0, 0, 0, 0.9);
+        border: 2px solid gold;
+        border-radius: 15px;
+        display: none; /* Initially hidden */
+        flex-direction: column;
+        z-index: 99;
+        overflow: hidden;
+    }
+    #messages {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        color: white;
+    }
+    .message-container {
+        margin: 10px 0;
+        padding: 8px 12px;
+        border-radius: 15px;
+        max-width: 80%;
+    }
+    .user-message-container {
+        background-color: #333;
+        margin-left: auto;
+    }
+    .bot-message-container {
+        background-color: #555;
+        margin-right: auto;
+    }
+    #form {
+        display: flex;
+        border-top: 1px solid gold;
+        padding: 10px;
+    }
+    #msg {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        background: #111;
+        color: gold;
+        border-radius: 5px;
+    }
+    #form button {
+        background: gold;
+        color: black;
+        border: none;
+        padding: 10px;
+        margin-left: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💰 Precious Metal Rates 💰</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Metal</th>
+          <th>Per Gram</th>
+          <th>Per 8 Grams</th>
+          <th>Per KG</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for metal, data in all_prices.items() %}
+        <tr>
+          <td>{{ metal }}</td>
+          <td>{{ data['per_gram'] }} ₹</td>
+          <td>{{ data['per_8gram'] }} ₹</td>
+          <td>{{ data['per_kg'] }} ₹</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    setInterval(() => {
+      const fw = document.createElement('div');
+      fw.classList.add('firework');
+      fw.style.left = Math.random() * window.innerWidth + 'px';
+      fw.style.top = Math.random() * window.innerHeight + 'px';
+      document.body.appendChild(fw);
+      setTimeout(() => fw.remove(), 1500);
+    }, 300);
+
+    setInterval(() => {
+      const g = document.createElement('div');
+      g.classList.add('glitter');
+      g.style.left = Math.random() * window.innerWidth + 'px';
+      g.style.top = Math.random() * window.innerHeight + 'px';
+      document.body.appendChild(g);
+      setTimeout(() => g.remove(), 2000);
+    }, 200);
+  </script>
+
+  <div id="chatbot-toggle">💬</div>
+
+  <div id="chatbot-box">
+    <div id="messages"></div>
+    <form id="form">
+      <input type="text" id="msg" placeholder="Ask something..." autocomplete="off">
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const toggle = document.getElementById("chatbot-toggle");
+    const box = document.getElementById("chatbot-box");
+    toggle.onclick = () => {
+      box.style.display = box.style.display === "flex" ? "none" : "flex";
+    };
+
+    const form = document.getElementById('form');
+    const msg = document.getElementById('msg');
+    const messages = document.getElementById('messages');
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, tag => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]
+      ));
+    }
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const text = msg.value.trim();
+      if (!text) return;
+
+      // Display user message
+      const userMessageDiv = document.createElement('div');
+      userMessageDiv.className = 'message-container user-message-container';
+      userMessageDiv.innerHTML = `<b>You:</b> ${escapeHTML(text)}`;
+      messages.appendChild(userMessageDiv);
+      messages.scrollTop = messages.scrollHeight;
+
+      // Clear input
+      msg.value = "";
+      
+      // Display a loading indicator
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'message-container bot-message-container';
+      loadingDiv.innerHTML = '<b>Bot:</b> ...';
+      messages.appendChild(loadingDiv);
+      messages.scrollTop = messages.scrollHeight;
+
+      // Send message to chatbot
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text })
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        
+        // Remove loading indicator and display bot's message
+        loadingDiv.remove();
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.className = 'message-container bot-message-container';
+        botMessageDiv.innerHTML = `<b>Bot:</b> ${escapeHTML(data.response)}`;
+        messages.appendChild(botMessageDiv);
+        messages.scrollTop = messages.scrollHeight;
+
+      } catch (error) {
+        loadingDiv.remove();
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'message-container bot-message-container';
+        errorDiv.style.color = 'red';
+        errorDiv.innerHTML = `<b>Bot:</b> Error - ${escapeHTML(error.message)}`;
+        messages.appendChild(errorDiv);
+        messages.scrollTop = messages.scrollHeight;
+      }
+    };
+  </script>
+</body>
+</html>
