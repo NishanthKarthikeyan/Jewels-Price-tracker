@@ -3,8 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Premium Metal Price Tracker</title>
+  
+  <!-- SEO Optimization -->
+  <title>Live Gold Prices & Premium Metal Price Tracker</title>
+  <meta name="description" content="Check live gold prices and precious metal rates updated in real-time. Accurate prices per gram, per 8 grams, and per kilogram.">
+  <meta name="keywords" content="gold prices, live gold rate, gold price today, silver price, platinum price, precious metals">
+  <meta name="author" content="Nishanth">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph for social media -->
+  <meta property="og:title" content="Live Gold Prices & Precious Metal Tracker">
+  <meta property="og:description" content="Track live gold prices and other precious metal rates updated every minute.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://your-render-domain.onrender.com/">
+  <meta property="og:image" content="https://your-render-domain.onrender.com/static/gold.jpg">
+
+  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
@@ -231,24 +247,20 @@
       const text = msg.value.trim();
       if (!text) return;
 
-      // Display user message
       const userMessageDiv = document.createElement('div');
       userMessageDiv.className = 'message-container user-message-container';
       userMessageDiv.innerHTML = `<b>You:</b> ${escapeHTML(text)}`;
       messages.appendChild(userMessageDiv);
       messages.scrollTop = messages.scrollHeight;
 
-      // Clear input
       msg.value = "";
       
-      // Display a loading indicator
       const loadingDiv = document.createElement('div');
       loadingDiv.className = 'message-container bot-message-container';
       loadingDiv.innerHTML = '<b>Bot:</b> ...';
       messages.appendChild(loadingDiv);
       messages.scrollTop = messages.scrollHeight;
 
-      // Send message to chatbot
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
@@ -256,13 +268,10 @@
           body: JSON.stringify({ message: text })
         });
 
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
         const data = await res.json();
         
-        // Remove loading indicator and display bot's message
         loadingDiv.remove();
         const botMessageDiv = document.createElement('div');
         botMessageDiv.className = 'message-container bot-message-container';
